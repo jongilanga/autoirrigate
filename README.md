@@ -16,7 +16,7 @@ Raspberry Pi AutoIrrigation System
 
 #Create a Database  and setup a webpage
 * Create database gpio and load your sql schema using the command below.
-* mysql -u(your_database_user_name) -p gpio  < sprinkler/database/gpio.sql (You will be prompted your password).
+* Then run (mysql -u(your_database_user_name) -p gpio  < sprinkler/database/gpio.sql) (You will be prompted your password).
 * Copy all your sprinkler/www/* to you webserver dir.
 * Change the variable on index.php to your correct username and password.
 
