@@ -2,7 +2,7 @@
 Raspberry Pi AutoIrrigation System
 
 # Prerequisites
-* Raspberry Pi 1 or 2 Model B
+* Raspberry Pi 1 or 2 Model B.
 * Pi Operating System (I used Raspbian but any should work) https://www.raspberrypi.org/downloads/
 * Gordons Wiring Pi http://wiringpi.com/download-and-install/
 
@@ -15,10 +15,10 @@ Raspberry Pi AutoIrrigation System
 * Optional(You can also compile the temperature sensor) under temp_sensor/dht11.c
 
 #Create a Database  and setup a webpage
-* create database gpio
-* mysql -u(your_database_user_name) -p gpio  < sprinkler/database/gpio.sql (You will be prompted your password)
-* Copy  all   your sprinkler/www/* to you webserver dir
-* Change the variable on index.php to your correct username and password
+* Create database gpio and load your sql schema using the command below.
+* mysql -u(your_database_user_name) -p gpio  < sprinkler/database/gpio.sql (You will be prompted your password).
+* Copy all your sprinkler/www/* to you webserver dir.
+* Change the variable on index.php to your correct username and password.
 
 #Run the sprinkler daemon
 * ./sprinkler
