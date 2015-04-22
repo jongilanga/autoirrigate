@@ -12,6 +12,16 @@ Raspberry Pi AutoIrrigation System
 
 #Compile Binaries
 * sprinkler/src/bin/sprinkler.cpp
+* Optional(You can also compile the temperature sensor) under temp_sensor/dht11.c
 
-Optional(You can also compile the temperature sensor)
+#Create a Database  and setup a webpage
+* create database gpio
+* mysql -u(your_database_user_name) -p gpio  < sprinkler/database/gpio.sql (You will be prompted your password)
+* Copy  all   your sprinkler/www/* to you webserver dir
+* Change the variable on index.php to your correct username and password
+
+#Run the sprinkler daemon
+* ./sprinkler
+* Access your webpage to were you installed your www file  http://localhost/autoirriagate
+
 
