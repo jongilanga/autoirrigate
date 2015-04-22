@@ -5,7 +5,6 @@ Raspberry Pi AutoIrrigation System
 * Raspberry Pi 1 or 2 Model B
 * Pi Operating System (I used Raspbian but any should work) https://www.raspberrypi.org/downloads/
 * Gordons Wiring Pi http://wiringpi.com/download-and-install/
-*
 
 #Install LAMP
 
