@@ -10,4 +10,8 @@ Raspberry Pi AutoIrrigation System
 
 * https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu
 
+#Compile Binaries
+* sprinkler/src/bin/sprinkler.cpp
+
+Optional(You can also compile the temperature sensor)
 
