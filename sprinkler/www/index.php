@@ -5,7 +5,7 @@ session_start();
 // EDIT THESE TWO VARIABLES //
 //////////////////////////////
 $MySQLUsername = " "; // Insert your MySQL username here
-$MySQLPassword = ""; // Instert your MySQL password here
+$MySQLPassword = " "; // Instert your MySQL password here
 
 /////////////////////////////////
 // DO NOT EDIT BELOW THIS LINE //
