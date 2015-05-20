@@ -153,8 +153,6 @@ while (1){
 		if (digitalRead(x) == 1){
    		    mysql_query(con,query_build("UPDATE `gpio`.`pinStatus` SET `pinStatus` = '1' WHERE `pinStatus`.`pinNumber` = '", x));
 		} else mysql_query(con,query_build("UPDATE `gpio`.`pinStatus` SET `pinStatus` = '0' WHERE `pinStatus`.`pinNumber` = '", x));
-
-                x++;
 		garage();
                 } while (x<8);
 
