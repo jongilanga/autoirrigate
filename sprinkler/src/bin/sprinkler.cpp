@@ -3,13 +3,12 @@
  * Author: Jongilanga Guma
  * Date: 2012-12-21 
  */
-
 // Includes
-#include <wiringPi.h>       // By Gordon
-#include <mysql/mysql.h>    //mysql connector library for C++
-#include "my_sql_header.h"  // customer header for making SQL queries
-#include "time_calcs.h"     // performs math operations on struct tm objects
-#include <unistd.h>         // I had to get thing to use the sleep function    
+#include <wiringPi.h> // By Gordon
+#include <mysql/mysql.h> //mysql connector library for C++
+#include "my_sql_header.h" // customer header for making SQL queries
+#include "time_calcs.h" // performs math operations on struct tm objects
+#include <unistd.h>
 
 using namespace std;
 
@@ -71,13 +70,13 @@ int main ()
     string channelstr[8];
     bool firstRun = true;
     int d;
-
     init();
 while (1){
     while (loop == 1) {
         x = 2;
         d = 0;
         p = 0;
+        int automatic = 0;
         do {
             gpioUpdate(x);
             theTime = UpdateTime();
@@ -92,38 +91,40 @@ while (1){
                 if ((pinStart[x] == 1) && (gpio_status[x] != pinStart[x])) {
                     p = query_result(query_build("SELECT isOpen FROM pumps WHERE pinNumber = '", x));
                     while (digitalRead(x) != 1) {
-                       if (digitalRead(p) != 1 ) {
-                           cout << "The pump is open digital read:"<<digitalRead(0)<<endl;
-                           cout<<"Switching the pump on  and waiting  for 5"<<endl;
+                       //if (digitalRead(p) != 1 ) {
+                           cout << "The pump is open:"<<digitalRead(0)<<endl;
+                           cout<<"Switching the pump on  and waiting  for 2"<<endl;
                            digitalWrite(p, 1);
-                           cout <<"The pump is :"<<p <<"Digita Read pump"<<digitalRead(0)<<endl;
-                           sleep(5);
-                        } else {
-                            //cout<<"Switching the solenoid on "<<endl;
+                           sleep(2);
+                       // } else {
+                            cout<<"Switching the solenoid on "<<endl;
                             digitalWrite(x, 1);
-		       }
+		      // }
                     };
                     gpio_status[x] = digitalRead(x);
                     channelTimeStart[x] = *theTime;
                     channelTimeEnd[x] = calc_end(channelTimeStart[x], channelDuration[x]);
                 }
                 if ((compTimes(*theTime, channelTimeEnd[x]) != -1) || (pinStart[x] == 0)){
+                   if(automatic == 0) {
                     p = query_result(query_build("SELECT isOpen FROM pumps WHERE pinNumber = '", x));
-                    //cout <<"pin start x : "<<pinStart[x]<<"pin start 3  is: "<<pinStart[3]<<"pin start 4:"<<pinStart[4]<<endl;
                     while (digitalRead(x) != 0) {
-                    if ((pinStart[3] == 0) && (pinStart[3] == 0) && (pinStart[4] == 0)) {
-                            digitalWrite(p, 0);
-                            cout<<"Switching the pump off  for solenoid 1"<<endl;
-                            sleep(5);
-                    }
-                        cout<<"Switching  off solenoid 1"<<endl;
-                        digitalWrite(x, 0);
+                        digitalWrite(p, 0);
+                        cout<<"Switching the pump off  for solenoid 1 haha I am auto"<<endl;
+                        cout <<theTime->tm_sec<<endl;
+                        cout <<"automatic:"<<automatic<<endl;
+                        sleep(7);
+                        cout<<"Switching  off solenoid 1 ha ha"<<endl;
+                         digitalWrite(x, 0);
 			sleep(0.05);
                     };
                     mysql_query(con,query_build("UPDATE `gpio`.`manual_start` SET `pinStart` = '0' WHERE `manual_start`.`pinNumber` = '", x));
                 }
+               }
+
             }
             else { // Pin is in auto mode
+                automatic = 1;
                 pinAutoMode[x] = query_result(query_build("SELECT pinAutoMode FROM `pinAutoMode` WHERE pinNumber = '", x));
                 if ((needUpdate[x] == 1)||(firstRun)) {
                     channelTimeStart[x] = getTime(x); // Gets auto run start time
@@ -192,51 +193,31 @@ void garage(){
 
 void autoRun(struct tm &start, struct tm &end, int x){
     int p = 0;
-   float total = 0;
     p  = query_result(query_build("SELECT isOpen FROM pumps WHERE pinNumber = '", x));
     if ((compTimes(start, *theTime) == -1) and (compTimes(*theTime, end) == -1)) {
-    if (digitalRead(p) != 1 ) {
-                           cout << "The pump is open digital read:"<<digitalRead(0)<<endl;
-                           cout<<"Switching the pump on  and waiting  for 5"<<endl;
-                           digitalWrite(p, 1);
-                           cout <<"The pump is :"<<p <<"Digita Read pump"<<digitalRead(0)<<endl;
-                           sleep(5);
-                        } else {
-                            //cout<<"Switching the solenoid on "<<endl;
-                            digitalWrite(x, 1);
-                       }
-
-  
-                       /*         while (digitalRead(x) != 1) {
+                               digitalWrite(p, 1);
+                               sleep(2);
+                                digitalWrite(x, 1);
+                                while (digitalRead(x) != 1) {
                                         digitalWrite(p, 1);
                                         sleep(1);
                                         digitalWrite(x, 1);
                                         sleep(0.05);
-                                };*/
+                                };
                             }
                             else {
                                 /*digitalWrite(x, 0);
                                 sleep(0.05);
                                 sleep(5);
                                 cout<<"Switching the pump off instance 2 in autorun"<<endl;
-                              digitalWrite(p, 0);*/
-                      
-        /*cout <<"The current time in seconds:"<<start.tm_sec<<endl;
-        cout <<"The seconds we got from database:"<<end.tm_sec<<endl;*/
-                    while (digitalRead(x) != 0) {
-                     if (start.tm_sec == 0) {
-                            
-                            digitalWrite(p, 0);
-                            cout<<"Switching the pump off  for solenoid 1"<<endl;
-                            sleep(5);
-                    }
-                        
-                        cout<<"Switching  off solenoid 1"<<endl;
-                        digitalWrite(x, 0);
-                        sleep(0.05);
-                    };
-                   // mysql_query(con,query_build("UPDATE `gpio`.`manual_start` SET `pinStart` = '0' WHERE `manual_start`.`pinNumber` = '", x));
-  }
+                                digitalWrite(p, 0);*/
+                                while (digitalRead(x) != 0) {
+                                        digitalWrite(p, 0);
+                                        sleep(7);
+                                        digitalWrite(x, 0);
+                                        cout<<"Switching the pump off instance 3"<<endl;
+                                };
+                            }
     return;
 }
 
